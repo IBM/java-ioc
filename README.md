@@ -342,15 +342,15 @@ This is the most powerful method to allow creating runtime-reconfigurable proper
 
 One example where you'd need a custom Generic injectable is when you not only need to pass the value around to other classes but also require running some number of unrelated jobs when the property value changes.
 
-The IoC framework makes the best attempt to inject what your class needs.  If you inject an interface called "Observable<SomeClassType>" and the property value cannot directly resolve to an "Observable", it'll look to see if it can be resolved to a "SomeClassType".
+The IoC framework makes the best attempt to inject what your class needs.  If you inject an interface called `Observable<SomeClassType>` and the property value cannot directly resolve to an `Observable`, it'll look to see if it can be resolved to a "SomeClassType".
 
-The requirements for a custom generic injectable are that what you're injecting is of the Java Generic form A<B>, and
-1. class A is declared with EXACTLY ONE Generic parameter, B (Note also that B could again be a further Generic type, like Map<String, SomeObject> that can be created from gson.  Any B that you can inject today for a property will also work with A<B> as long as A satisfies the remaining requirements below.)
+The requirements for a custom generic injectable are that what you're injecting is of the Java Generic form `A<B>`, and
+1. class A is declared with EXACTLY ONE Generic parameter, B (Note also that B could again be a further Generic type, like Map<String, SomeObject> that can be created from gson.  Any B that you can inject today for a property will also work with A`<B>` as long as A satisfies the remaining requirements below.)
 2. your property will resolve into B
 3. class A has a default constructor so it can be used by the configuration framework for instantiation
 4. class A implements EXACTLY ONE method of the following form (to allow value updates):
         return type "void"
-        single argument, B (with the exact same Generic signature as the one used in the class declaration of A<B>)
+        single argument, B (with the exact same Generic signature as the one used in the class declaration of `A<B>`)
 
 For example, consider this *Observable* class:
 

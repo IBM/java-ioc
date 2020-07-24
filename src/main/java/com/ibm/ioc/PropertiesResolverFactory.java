@@ -108,7 +108,7 @@ public class PropertiesResolverFactory {
   private static void registerIniProvider(final URI uri, final PropertiesResolver resolver, final int index) {
     try {
       // packaged ini files don't need reloading
-      final INIPropertiesProvider p = new INIPropertiesProvider("", uri, false);
+      final INIPropertiesProvider p = new INIPropertiesProvider(uri, false);
       resolver.announcePropertiesProvider(uri.toString(), index);
       resolver.registerPropertiesProvider(uri.toString(), p);
 

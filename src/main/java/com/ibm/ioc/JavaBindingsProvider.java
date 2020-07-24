@@ -54,9 +54,13 @@ public final class JavaBindingsProvider extends BindingsProviderBase {
   static {
     final String version = System.getProperty("java.version");
     final String[] components = version.split("\\.");
-
-    final int v = Integer.parseInt(components[1]);
-    JAVA_VERSION = v;
+    if(components[0].equals("1")) {
+      final int v = Integer.parseInt(components[1]);
+      JAVA_VERSION = v;
+    } else {
+      final int v = Integer.parseInt(components[0]);
+      JAVA_VERSION = v;
+    }
   }
 
   interface RegistrableDefinition {

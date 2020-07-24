@@ -25,7 +25,7 @@ public class INIPropertiesProviderTest {
   }
 
   protected PropertiesProvider getProvider() throws IOException, URISyntaxException {
-    return new INIPropertiesProvider("org.cleversafe.",
+    return new INIPropertiesProvider(
         INIPropertiesProviderTest.class.getClassLoader().getResource(
             "com/ibm/ioc/properties.conf").toURI(),
         false);
@@ -34,7 +34,7 @@ public class INIPropertiesProviderTest {
   @Test
   public void testWUIniFileNotFound() throws Exception {
     final INIPropertiesProvider ini =
-        new INIPropertiesProvider("", new File(System.getProperty("java.io.tmpdir"),
+        new INIPropertiesProvider(new File(System.getProperty("java.io.tmpdir"),
             "this-is-a-nonexistent-file.ini"), false);
     Assert.assertEquals(0, ini.getQualifiedNames().size());
   }
@@ -42,7 +42,7 @@ public class INIPropertiesProviderTest {
   @Test
   public void testWUIniDirectoryNotFound() throws Exception {
     final INIPropertiesProvider ini =
-        new INIPropertiesProvider("", new File(new File(System.getProperty("java.io.tmpdir"),
+        new INIPropertiesProvider(new File(new File(System.getProperty("java.io.tmpdir"),
             "nonexistent-dir"),
             "this-is-a-nonexistent-file.ini"), false);
     Assert.assertEquals(0, ini.getQualifiedNames().size());
@@ -54,60 +54,59 @@ public class INIPropertiesProviderTest {
         "com/ibm/ioc/properties.conf").toURI();
     final URI nonexistent = previous.resolve("nonexistent");
     final INIPropertiesProvider ini =
-        new INIPropertiesProvider("", nonexistent, false);
+        new INIPropertiesProvider(nonexistent, false);
     Assert.assertEquals(0, ini.getQualifiedNames().size());
   }
 
   @Test
   public void testGetUnderscoreProperty() throws Exception {
     Assert.assertEquals("1000",
-        this.provider.getProperty("org.cleversafe.stuff.i-like-this"));
+        this.provider.getProperty("stuff.i-like-this"));
     Assert.assertEquals("1000",
-        this.provider.getProperty("org.cleversafe.stuff.i_like_this"));
+        this.provider.getProperty("stuff.i_like_this"));
     Assert.assertEquals("4444",
-        this.provider.getProperty("org.cleversafe.stuff.i-hate-this"));
+        this.provider.getProperty("stuff.i-hate-this"));
     Assert.assertEquals("4444",
-        this.provider.getProperty("org.cleversafe.stuff.i_hate_this"));
+        this.provider.getProperty("stuff.i_hate_this"));
   }
 
   @Test
   public void testGetProperty() throws Exception {
     Assert.assertEquals("this is great",
-        this.provider.getProperty("org.cleversafe.string.funtest"));
+        this.provider.getProperty("string.funtest"));
     Assert.assertEquals("this is just a single string",
-        this.provider.getProperty("org.cleversafe.string.nofuntest"));
+        this.provider.getProperty("string.nofuntest"));
     Assert.assertEquals("1325",
-        this.provider.getProperty("org.cleversafe.int.funtest"));
+        this.provider.getProperty("int.funtest"));
     Assert.assertEquals("1883",
-        this.provider.getProperty("org.cleversafe.int.nofuntest"));
+        this.provider.getProperty("int.nofuntest"));
     Assert.assertEquals("true",
-        this.provider.getProperty("org.cleversafe.boolean.funtest"));
+        this.provider.getProperty("boolean.funtest"));
     Assert.assertEquals("TRUE",
-        this.provider.getProperty("org.cleversafe.boolean.nofuntest"));
+        this.provider.getProperty("boolean.nofuntest"));
     Assert.assertEquals("false",
-        this.provider.getProperty("org.cleversafe.boolean.offtest"));
+        this.provider.getProperty("boolean.offtest"));
     Assert.assertEquals("13.25",
-        this.provider.getProperty("org.cleversafe.double.funtest"));
+        this.provider.getProperty("double.funtest"));
     Assert.assertEquals("1.883",
-        this.provider.getProperty("org.cleversafe.double.nofuntest"));
+        this.provider.getProperty("double.nofuntest"));
   }
 
   @Test
   public void testIsSet() {
     Assert.assertFalse(this.provider.isSet("org.example.bad.novalue"));
-    Assert.assertFalse(this.provider.isSet("org.cleversafe.bad.novalue"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.string.funtest"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.string.nofuntest"));
-    Assert.assertFalse(this.provider.isSet("org.cleversafe.string.novalue"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.int.funtest"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.int.nofuntest"));
-    Assert.assertFalse(this.provider.isSet("org.cleversafe.int.novalue"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.boolean.funtest"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.boolean.nofuntest"));
-    Assert.assertFalse(this.provider.isSet("org.cleversafe.boolean.novalue"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.double.funtest"));
-    Assert.assertTrue(this.provider.isSet("org.cleversafe.double.nofuntest"));
-    Assert.assertFalse(this.provider.isSet("org.cleversafe.double.novalue"));
-
+    Assert.assertFalse(this.provider.isSet("bad.novalue"));
+    Assert.assertTrue(this.provider.isSet("string.funtest"));
+    Assert.assertTrue(this.provider.isSet("string.nofuntest"));
+    Assert.assertFalse(this.provider.isSet("string.novalue"));
+    Assert.assertTrue(this.provider.isSet("int.funtest"));
+    Assert.assertTrue(this.provider.isSet("int.nofuntest"));
+    Assert.assertFalse(this.provider.isSet("int.novalue"));
+    Assert.assertTrue(this.provider.isSet("boolean.funtest"));
+    Assert.assertTrue(this.provider.isSet("boolean.nofuntest"));
+    Assert.assertFalse(this.provider.isSet("boolean.novalue"));
+    Assert.assertTrue(this.provider.isSet("double.funtest"));
+    Assert.assertTrue(this.provider.isSet("double.nofuntest"));
+    Assert.assertFalse(this.provider.isSet("double.novalue"));
   }
 }
